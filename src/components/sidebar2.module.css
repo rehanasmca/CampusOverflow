@@ -1,0 +1,74 @@
+.navbar {
+    background-color: white;
+    height: 60px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 25%;
+  }
+  
+  .menuBars {
+    margin-left: 2rem;
+    font-size: 2rem;
+    background: none;
+  }
+  
+  .navMenu {
+    background-color: #060b26;
+    width: 25%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 850ms;
+  }
+  
+  .navMenu.active {
+    left: 0;
+    transition: 350ms;
+  }
+  
+  .navText {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+  }
+  
+  .navText a {
+    text-decoration: none;
+    color: #1a83ff;
+    font-size: 18px;
+    width: 95%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 4px;
+  }
+  
+  .navText a:hover {
+    background-color: #eff1f3;
+  }
+  
+  .navMenuItems {
+    width: 25%;
+  }
+  
+  .navbarToggle {
+    background-color: white;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+  
+  span {
+    margin-left: 16px;
+  }
+  

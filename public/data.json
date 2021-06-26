@@ -1,0 +1,84 @@
+{
+    "home": {
+        "pathName": "/home"
+    },
+    "User management" : {
+        "isOpen": false,
+        "Add user" :{
+            "pathName" : "/adduser"
+        },
+        "View/Edit user " :{
+            "pathName": "/edituser"
+        }
+    },
+    "products": {
+        "isOpen": false,
+        "electronic": {
+            "pathName": "/electronics"
+        },
+        "home appliances": {
+            "pathName": "/electonics"
+        },
+        "furniture": {
+            "pathName": "/furniture"
+        },
+        "food Items": {
+            "pathName": "/foodItems"
+        },
+        "clothes": {
+            "isOpen": false,
+            "men" : {
+                "isOpen": false,
+                "official" : {
+                    "isOpen": false,
+                    "branded": {
+                        "pathName" : "/products"
+                    },
+                    "normal": {
+                        "pathName" : "/nobrands"
+                    }
+                   
+                },
+                "nightWear" : {
+                    "pathName" : "/nightwear"
+                }
+            },
+            "women" : {
+                "isOpen": false,
+                "garments" : {
+                    "isOpen" : false,
+                    "accessories" : {
+                        "pathName" : "/accessories"
+                    },
+                    "beauty products" : {
+                        "pathName": "/beauty"
+                    }
+                },
+                "officialWomen" : {
+                    "pathName" : "/officialWomen"
+                },
+                "nightWearWomen" : {
+                    "pathName" : "/nightwearWomen"
+                }
+            }
+        }
+    },
+    "services": {
+        "isOpen" : false,
+        "developing" : {
+            "products" : {
+                "pathName": "/software products"
+            },
+            "testing" : {
+                "pathName" : "/testing"
+            }
+        }
+       
+    },
+    "About": {
+        "pathName": "/home"
+    },
+    "History": {
+        "pathName": "/history"
+    }
+}
