@@ -5,19 +5,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaAlignRight } from 'react-icons/fa';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import LoginModal from './components/loginModal';
-import GetModal from './components/getModal';
+import GetModal from '../../components/Login-component/getModal';
+import { connect } from 'react-redux'
+
 class Header extends React.Component {
   constructor(props) {
+    console.log(props)
     super(props);
-    this.state = { value: {}, isLogin:false };
+    this.state = { value: {}, isLogin: false };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.toggleClose = this.toggleClose.bind(this);
     let data = localStorage.getItem('userData');
-    if(data){
-      this.setState({isLogin : true});
-      this.menusState = true;
-    }
+   
   }
   menusState = false;
   toggleOpen = (menu) => {
@@ -38,31 +37,31 @@ class Header extends React.Component {
     this.setState({ data });
   }
 
-  toggleClosesub = (menu, subMenu ) => {
+  toggleClosesub = (menu, subMenu) => {
     let data = { ...this.state }
     data.value[menu][subMenu].isOpen = false;
     this.setState({ data });
   }
 
-  toggleOpen1 = (menu,subMenu, level1menu ) => {
+  toggleOpen1 = (menu, subMenu, level1menu) => {
     let data = { ...this.state }
     data.value[menu][subMenu][level1menu].isOpen = true;
     this.setState({ data });
   }
 
-  toggleClose1 = (menu, subMenu, level1menu ) => {
+  toggleClose1 = (menu, subMenu, level1menu) => {
     let data = { ...this.state }
     data.value[menu][subMenu][level1menu].isOpen = false;
     this.setState({ data });
   }
 
-  toggleOpen2 = (menu, subMenu, level1menu, level2menu ) => {
+  toggleOpen2 = (menu, subMenu, level1menu, level2menu) => {
     let data = { ...this.state }
     data.value[menu][subMenu][level1menu][level2menu].isOpen = true;
     this.setState({ data });
   }
 
-  toggleClose2 = (menu,  subMenu, level1menu, level2menu) => {
+  toggleClose2 = (menu, subMenu, level1menu, level2menu) => {
     let data = { ...this.state }
     data.value[menu][subMenu][level1menu][level2menu].isOpen = false;
     this.setState({ data });
@@ -85,10 +84,11 @@ class Header extends React.Component {
         this.setState({ value: myJson });
       });
   }
+
+  
   componentDidMount() {
     this.getData();
-    let data = localStorage.getItem('userData');
-    if(data){
+    if (this.props.login.accessToken != "") {
       this.menusState = true;
     }
   }
@@ -96,14 +96,19 @@ class Header extends React.Component {
   render() {
     const menuClass = `dropdown-menu${this.state.isOpen ? " show" : ""}`;
     let keys = Object.keys(this.state.value);
+    if (this.props.login.accessToken != "") {
+      this.menusState = true;
+    }
     return (<>
+
       <nav className="navbar navbar-expand-sm bg-primary navbar-dark" >
+
         <ul className="navbar-nav">
           {
             Object.keys(this.state.value).map((key, index) =>
               this.state.value[key].pathName ?
-                <li key={index} className="nav-item active" ><Link to={this.state.value[key].pathName} className="nav-link" style={!this.menusState ? {color: 'lightgray', cursor: 'not-allowed'} : {color: 'white', cursor: 'pointer'}}> {key} </Link></li> :
-                <div className="dropdown" 
+                <li key={index} className="nav-item active" ><Link to={this.state.value[key].pathName}  className={!this.menusState ? `nav-link ${Classes.disabled}` : `nav-link ${Classes.enabled}`}> {key} </Link></li> :
+                <div className="dropdown"
                   onMouseEnter={() => this.toggleOpen(key)}
                   onMouseLeave={() => this.toggleClose(key)}
                 >
@@ -113,10 +118,10 @@ class Header extends React.Component {
                   <div id="items" className={this.state.value[key].isOpen ? "dropdown-menu show" : "dropdown-menu"} aria-labelledby="dropdownMenuLink">
                     {this.state.value ? Object.keys(this.state.value[key]).map((subMenu, index) =>
                       subMenu != "isOpen" && this.state.value[key][subMenu].pathName ? <Link to={this.state.value[key][subMenu].pathName} className="dropdown-item">{subMenu}</Link>
-                        : subMenu != "isOpen" && 
+                        : subMenu != "isOpen" &&
                         <li className="nav-item dropdown"
-                        onMouseEnter={() => this.toggleOpensub(key, subMenu )}
-                        onMouseLeave={() => this.toggleClosesub(key, subMenu)}
+                          onMouseEnter={() => this.toggleOpensub(key, subMenu)}
+                          onMouseLeave={() => this.toggleClosesub(key, subMenu)}
                         >
                           <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style={{ color: 'black' }}>
                             {subMenu}
@@ -124,37 +129,37 @@ class Header extends React.Component {
                           <ul className={this.state.value[key][subMenu].isOpen ? "dropdown-menu show" : "dropdown-menu"}>
                             {Object.keys(this.state.value[key][subMenu]).map((childMenu, index) =>
                               childMenu != "isOpen" && this.state.value[key][subMenu][childMenu].pathName ? <li><Link to={this.state.value[key][subMenu][childMenu].pathName} className="dropdown-item">{childMenu}</Link></li> :
-                                  childMenu != "isOpen" && <li className="nav-item dropdown"
-                                onMouseEnter={() => this.toggleOpen1(key, subMenu, childMenu)}
-                                onMouseLeave={() => this.toggleClose1(key, subMenu,childMenu )}
+                                childMenu != "isOpen" && <li className="nav-item dropdown"
+                                  onMouseEnter={() => this.toggleOpen1(key, subMenu, childMenu)}
+                                  onMouseLeave={() => this.toggleClose1(key, subMenu, childMenu)}
                                 >
                                   <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style={{ color: 'black' }}>
-                                     {childMenu}
-                                   </a>
-                                   <ul className={this.state.value[key][subMenu][childMenu].isOpen ? "dropdown-menu show" : "dropdown-menu"}>
-                                     {Object.keys(this.state.value[key][subMenu][childMenu]).map((leveltwoMenu, index) =>
+                                    {childMenu}
+                                  </a>
+                                  <ul className={this.state.value[key][subMenu][childMenu].isOpen ? "dropdown-menu show" : "dropdown-menu"}>
+                                    {Object.keys(this.state.value[key][subMenu][childMenu]).map((leveltwoMenu, index) =>
                                       leveltwoMenu != "isOpen" && this.state.value[key][subMenu][childMenu][leveltwoMenu].pathName ? <li><Link to={this.state.value[key][subMenu][childMenu][leveltwoMenu].pathName} className="dropdown-item">{leveltwoMenu}</Link></li> :
-                                      leveltwoMenu != "isOpen" && 
-                                      <li className="nav-item dropdown"
-                                      onMouseEnter={() => this.toggleOpen2(key,subMenu, childMenu, leveltwoMenu)}
-                                      onMouseLeave={() => this.toggleClose2(key,subMenu, childMenu, leveltwoMenu)}
-                                      >
-                                        <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style={{ color: 'black' }}>
-                                          {leveltwoMenu}
-                                        </a>
-                                        <ul className={this.state.value[key][subMenu][childMenu][leveltwoMenu].isOpen ? "dropdown-menu show" : "dropdown-menu"}>
-                                          {Object.keys(this.state.value[key][subMenu][childMenu][leveltwoMenu]).map((levelthreeMenu, index) =>
-                                            levelthreeMenu != "isOpen" && this.state.value[key][subMenu][childMenu][leveltwoMenu][levelthreeMenu].pathName ? <li><Link to={this.state.value[key][subMenu][childMenu][leveltwoMenu][levelthreeMenu].pathName} className="dropdown-item">{levelthreeMenu}</Link></li> :
-                                               
-                                            console.log(levelthreeMenu) )}
-                                        </ul>
-                                      </li>)}
-                                  
-                                    
+                                        leveltwoMenu != "isOpen" &&
+                                        <li className="nav-item dropdown"
+                                          onMouseEnter={() => this.toggleOpen2(key, subMenu, childMenu, leveltwoMenu)}
+                                          onMouseLeave={() => this.toggleClose2(key, subMenu, childMenu, leveltwoMenu)}
+                                        >
+                                          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style={{ color: 'black' }}>
+                                            {leveltwoMenu}
+                                          </a>
+                                          <ul className={this.state.value[key][subMenu][childMenu][leveltwoMenu].isOpen ? "dropdown-menu show" : "dropdown-menu"}>
+                                            {Object.keys(this.state.value[key][subMenu][childMenu][leveltwoMenu]).map((levelthreeMenu, index) =>
+                                              levelthreeMenu != "isOpen" && this.state.value[key][subMenu][childMenu][leveltwoMenu][levelthreeMenu].pathName ? <li><Link to={this.state.value[key][subMenu][childMenu][leveltwoMenu][levelthreeMenu].pathName} className="dropdown-item">{levelthreeMenu}</Link></li> :
+
+                                                console.log(levelthreeMenu))}
+                                          </ul>
+                                        </li>)}
+
+
                                   </ul>
-                                 </li>
-                                     
-                             )}
+                                </li>
+
+                            )}
                           </ul>
                         </li>)
                       : ""}
@@ -164,9 +169,15 @@ class Header extends React.Component {
         </ul>
         <GetModal />
       </nav>
-      
+
     </>
     )
   }
 }
-export default Header;
+
+const mapStateToProps = state => {
+    return {
+         login: state.login
+    }
+}
+export default connect(mapStateToProps)(Header);

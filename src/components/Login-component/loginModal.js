@@ -8,10 +8,7 @@ function LoginModal(props) {
     const handleClose =()=>{
         props.onHide();
     }
-    const onLoginFormSubmit = (e) => {
-        e.preventDefault();
-        handleClose();
-      };
+   
     
     return (
       <Modal

@@ -4,12 +4,34 @@
     },
     "User management" : {
         "isOpen": false,
-        "Add user" :{
-            "pathName" : "/adduser"
+        "users" : {
+            "isOpen": false,
+            "Add user" :{
+                "pathName" : "/adduser"
+            },
+            "View/Edit user " :{
+                "pathName": "/users"
+            }
         },
-        "View/Edit user " :{
-            "pathName": "/edituser"
+        "Roles" : {
+            "isOpen": false,
+            "Add Role" :{
+                "pathName" : "/addRole"
+            },
+            "View/Edit role " :{
+                "pathName": "/roles"
+            }
+        },
+        "Permissions" : {
+            "isOpen": false,
+            "Add Permission" :{
+                "pathName" : "/addPermission"
+            },
+            "View/Edit permission " :{
+                "pathName": "/permissions"
+            }
         }
+        
     },
     "products": {
         "isOpen": false,

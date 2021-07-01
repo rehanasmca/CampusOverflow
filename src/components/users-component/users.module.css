@@ -1,0 +1,10 @@
+.pages{
+    padding: 10px;
+    border: 1px solid blue;
+}
+.pagesList{
+    display: flex;
+     list-style-type:none;
+     float: right;
+     
+}
