@@ -104,9 +104,9 @@ handleChecked =(index) =>{
               <td>{index + 1}</td>
               <td>{item.roleName}</td>
               {/* <td key={index} >{item.role}</td> */}
-              <td><FaIcons.FaEdit onClick={() => this.handleShow(index + 1)} /></td>
-              <td><FaIcons.FaTrash onClick={() => this.deleteUser(index+1)} /></td>
-              {/* <td><InputGroup.Checkbox onChange={() => this.handleChecked(index+1) }/></td> */}
+              <td><FaIcons.FaEdit onClick={() => this.handleShow(item.id)} /></td>
+              <td><FaIcons.FaTrash onClick={() => this.deleteUser(item.id)} /></td>
+              {/* <td><InputGroup.Checkbox onChange={() => this.handleChecked(item.id) }/></td> */}
             </tr>
           )) : ""}
         </tbody>

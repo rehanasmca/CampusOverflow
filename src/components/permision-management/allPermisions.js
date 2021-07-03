@@ -103,8 +103,8 @@ handleChecked =(index) =>{
               <td><FaIcons.FaEdit onClick={() => this.handleShow(item.id)
               //  this.setState({showEdit : { show: true, id: item.Id, values: item }})
                } /></td>
-              <td><FaIcons.FaTrash onClick={() => this.deleteUser(index+1)} /></td>
-              <td><InputGroup.Checkbox onChange={() => this.handleChecked(index+1) }/></td>
+              <td><FaIcons.FaTrash onClick={() => this.deleteUser(item.id)} /></td>
+              <td><InputGroup.Checkbox onChange={() => this.handleChecked(item.id) }/></td>
             </tr>
           )) : ""}
         </tbody>
