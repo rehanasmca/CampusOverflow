@@ -93,7 +93,7 @@ class EditRole extends React.Component {
                             label={item.permissionName}
                             id={item.id}
                             key={index}
-                            checked={false}
+
                             onChange={(event) => {
                                 if(event.target.checked == true){
                                     values.permissions.push(item.id);

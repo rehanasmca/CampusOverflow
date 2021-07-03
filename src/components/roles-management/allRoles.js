@@ -49,7 +49,7 @@ class Roles extends React.Component {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    axios.get( Constants.testBaseUrl +`/Account/GetRoleMasterByIdAsync/?id=${Id}`, { headers: requestOptions })
+    axios.get( Constants.testBaseUrl +`/Account/GetRoleMasterByIdAsync/${Id}`, { headers: requestOptions })
       .then(response => {
         if (response.data.data) {
           this.setState({showEdit : { show: true, id: Id, values: response.data.data[0] }});
@@ -99,7 +99,7 @@ handleChecked =(index) =>{
           </tr>
         </thead>
         <tbody>
-          { this.props.roles.role ? this.props.roles.role.map((item, index) => (
+          { this.props.roles.roles ? this.props.roles.roles.map((item, index) => (
             <tr key={index} onClick={() => console.log(index, item)}>
               <td>{index + 1}</td>
               <td>{item.roleName}</td>

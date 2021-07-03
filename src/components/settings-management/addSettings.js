@@ -3,12 +3,12 @@ import { Formik } from 'formik';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Classes from './countries.module.css';
+import Classes from './settings.module.css';
 import { connect } from 'react-redux';
-import { fetchCountries, CreateNewCountry } from '../../redux/reducers/countriesReducer';
+import { fetchSettings, CreateNewSetting } from '../../redux/reducers/settingsReducer';
 import * as Yup from 'yup';
 
-class AddCountry extends React.Component {
+class AddSettings extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -16,10 +16,9 @@ class AddCountry extends React.Component {
 
 
     initialValues = {
-        countryName: "",
-        metaKeyWords: "",
-        metaDescription: "",
-        metaTitle: "",
+        name: "",
+        value: "",
+        numberOfReTryes: 0,
         dateInserted: new Date(),
         dateUpdated: new Date(),
         active: true,
@@ -27,34 +26,28 @@ class AddCountry extends React.Component {
     };
 
     validationSchema = Yup.object().shape({
-        countryName: Yup.string()
+        name: Yup.string()
             .min(3, 'Too Short!')
             .max(30, 'Too Long!')
             .required('Required'),
-        metaKeyWords: Yup.string()
-            .min(3, 'Too Short!')
-            .max(30, 'Too Long!')
+        value: Yup.string()
             .required('Required'),
-        metaDescription: Yup.string().required('Required')
-            .min(3, 'Too short!').max(50, 'Too Long'),
-        metaTitle: Yup.string()
-            .min(3, 'Too Short')
-            .max(30, 'Too Long').required('Required')
+        numberOfReTryes: Yup.number().required('Required'),
     });
 
 
     render() {
         return (<div className={Classes.maindiv}>
-            <h1>User Registration form</h1>
+            <h1>Create New University form</h1>
             <Formik
                 initialValues={this.initialValues}
                 validationSchema={this.validationSchema}
                 // when submit form
                 onSubmit={(values, { setSubmitting }) => {
-                    this.props.CreateNewCountry(values).then(res => {
+                    this.props.CreateNewSetting(values).then(res => {
                         if (res.data) {
                             setSubmitting(false);
-                            this.props.fetchCountries();
+                            this.props.fetchSettings();
                         } else {
                             console.log("error");
                         }
@@ -73,51 +66,39 @@ class AddCountry extends React.Component {
 
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Country Name</Form.Label>
+                            <Form.Label>Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="countryName"
+                                name="name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.countryName} className={Classes.formInput} />
+                                value={values.name} className={Classes.formInput} />
                             <Form.Text className="text-muted">
-                                {errors.countryName && touched.countryName && errors.countryName}
+                                {errors.name && touched.name && errors.name}
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Meta KeyWords</Form.Label>
+                            <Form.Label>Value</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="metaKeyWords"
+                                name="value"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.metaKeyWords} className={Classes.formInput} />
+                                value={values.value} className={Classes.formInput} />
                             <Form.Text className="text-muted">
-                                {errors.metaKeyWords && touched.metaKeyWords && errors.metaKeyWords}
+                                {errors.value && touched.value && errors.value}
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Meta Description</Form.Label>
+                            <Form.Label>Number Of ReTryes</Form.Label>
                             <Form.Control
-                                type="text"
-                                name="metaDescription"
+                                type="number"
+                                name="numberOfReTryes"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.metaDescription} className={Classes.formInput} />
+                                value={values.numberOfReTryes} className={Classes.formInput} />
                             <Form.Text className="text-muted">
-                                {errors.metaDescription && touched.metaDescription && errors.metaDescription}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Meta Title</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="metaTitle"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.metaTitle} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.metaTitle && touched.metaTitle && errors.metaTitle}
+                                {errors.numberOfReTryes && touched.numberOfReTryes && errors.numberOfReTryes}
                             </Form.Text>
                         </Form.Group>
                         <Button type="submit" disabled={isSubmitting} variant="primary">Save</Button>
@@ -131,4 +112,11 @@ class AddCountry extends React.Component {
     }
 }
 
-export default connect('', { CreateNewCountry, fetchCountries })(AddCountry);
+const mapStateToProps = state => {
+    return {
+        login: state.login.accessToken ? state.login.accessToken : [],
+        settings: state.settings ? state.settings : []
+
+    }
+};
+export default connect(mapStateToProps, { fetchSettings, CreateNewSetting })(AddSettings);

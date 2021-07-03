@@ -3,12 +3,14 @@ import { Formik } from 'formik';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Classes from './countries.module.css';
+import Classes from './cities.module.css';
 import { connect } from 'react-redux';
-import { fetchCountries, CreateNewCountry } from '../../redux/reducers/countriesReducer';
+import { CreateNewCity, fetchCities } from '../../redux/reducers/citiesReducer';
+import { fetchCountries } from '../../redux/reducers/countriesReducer';
+import {fetchStates} from '../../redux/reducers/statesReducer';
 import * as Yup from 'yup';
 
-class AddCountry extends React.Component {
+class AddCity extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -16,7 +18,9 @@ class AddCountry extends React.Component {
 
 
     initialValues = {
-        countryName: "",
+        cityName: "",
+        countryId: 1,
+        stateId: 1,
         metaKeyWords: "",
         metaDescription: "",
         metaTitle: "",
@@ -27,34 +31,42 @@ class AddCountry extends React.Component {
     };
 
     validationSchema = Yup.object().shape({
-        countryName: Yup.string()
+        cityName: Yup.string()
             .min(3, 'Too Short!')
             .max(30, 'Too Long!')
             .required('Required'),
+        countryId: Yup.string()
+            .required('Required'),
+        stateId: Yup.string().required('Required'),
         metaKeyWords: Yup.string()
-            .min(3, 'Too Short!')
-            .max(30, 'Too Long!')
-            .required('Required'),
-        metaDescription: Yup.string().required('Required')
-            .min(3, 'Too short!').max(50, 'Too Long'),
+            .min(3, 'Too Short')
+            .max(30, 'Too Long').required('Required'),
+        metaDescription: Yup.string()
+            .min(3, 'Too Short')
+            .max(50, 'Too Long').required('Required'),
         metaTitle: Yup.string()
             .min(3, 'Too Short')
             .max(30, 'Too Long').required('Required')
+
     });
 
-
+componentDidMount(){
+    this.props.fetchCountries();
+    this.props.fetchStates();
+}
     render() {
         return (<div className={Classes.maindiv}>
-            <h1>User Registration form</h1>
+            <h1>Create New City form</h1>
             <Formik
                 initialValues={this.initialValues}
                 validationSchema={this.validationSchema}
                 // when submit form
                 onSubmit={(values, { setSubmitting }) => {
-                    this.props.CreateNewCountry(values).then(res => {
+                    this.props.CreateNewCity(values).then(res => {
                         if (res.data) {
                             setSubmitting(false);
-                            this.props.fetchCountries();
+                            this.props.fetchCities();
+                           
                         } else {
                             console.log("error");
                         }
@@ -73,15 +85,41 @@ class AddCountry extends React.Component {
 
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Country Name</Form.Label>
+                            <Form.Label>City Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="countryName"
+                                name="cityName"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.countryName} className={Classes.formInput} />
+                                value={values.cityName} className={Classes.formInput} />
                             <Form.Text className="text-muted">
-                                {errors.countryName && touched.countryName && errors.countryName}
+                                {errors.cityName && touched.cityName && errors.cityName}
+                            </Form.Text>
+                        </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Country Id</Form.Label>
+                            <Form.Control as="select"
+                                name="countryId"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.countryId} className={Classes.formInput}>
+                                {this.props.countries.countries ? this.props.countries.countries.map((item, index) => <option value={item.id}>{item.countryName}</option>) : ''}
+                            </Form.Control>
+                            <Form.Text className="text-muted">
+                                {errors.countryId && touched.countryId && errors.countryId}
+                            </Form.Text>
+                        </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>State Id</Form.Label>
+                            <Form.Control as="select"
+                                name="stateId"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.stateId} className={Classes.formInput}>
+                                {this.props.states.states ? this.props.states.states.map((item, index) => <option value={item.id}>{item.stateName}</option>) : ''}
+                            </Form.Control>
+                            <Form.Text className="text-muted">
+                                {errors.countryId && touched.countryId && errors.countryId}
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
@@ -130,5 +168,13 @@ class AddCountry extends React.Component {
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+      login: state.login.accessToken ? state.login.accessToken : [],
+      countries: state.countries ? state.countries :[],
+      states: state.states ? state.states :[] 
+      
+    }
+  };
 
-export default connect('', { CreateNewCountry, fetchCountries })(AddCountry);
+export default connect(mapStateToProps, { CreateNewCity, fetchCities, fetchCountries, fetchStates })(AddCity);

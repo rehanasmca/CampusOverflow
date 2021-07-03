@@ -16,7 +16,7 @@ function DeleteRoleModal(props) {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token
     };
-    axios.post(Constants.testBaseUrl +`/Account/DeleteRoleMaster/?id=${id}`, { headers: requestOptions })
+    axios.post(Constants.testBaseUrl +`/Account/DeleteRoleMaster/${id}`, { headers: requestOptions })
         .then(response => {
             if (response.data.data) {
                 alert("added user successfully");

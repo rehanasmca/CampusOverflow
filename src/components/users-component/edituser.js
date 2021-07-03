@@ -8,6 +8,7 @@ import Classes from './adduser.module.css';
 import { PasswordRules } from '../../password-validations/adminPasswordValidations';
 import { connect} from 'react-redux';
 import {updateUserValues, fetchUsers} from '../../redux/reducers/usersReducer';
+import {fetchRoles} from '../../redux/reducers/rolesReducer';
 class Edituser extends React.Component {
     constructor(props){
         super(props);
@@ -17,16 +18,16 @@ class Edituser extends React.Component {
     }
 
 initialValues = {
-    // userName: this.props.values.userName,
-    // email: this.props.values.email,
-    // password: this.props.values.password,
-    // phoneNumber: this.props.values.phoneNumber,
-    // dateInserted: new Date(),
-    // dateUpdated: new Date(),
-    // active: true,
-    // deleted: false,
-    // confirmPassword: '',
-    // roles: []
+    userName: this.props.values.userName,
+    email: this.props.values.email,
+    password: this.props.values.password,
+    phoneNumber: this.props.values.phoneNumber,
+    dateInserted: this.props.values.dateInserted,
+    dateUpdated: new Date(),
+    active: this.props.values.active,
+    deleted: this.props.values.deleted,
+    confirmPassword: '',
+    roles: this.props.values.roles ? this.props.values.roles : []
 }
 // validate password
 validatePassword = (p) => {
@@ -59,7 +60,9 @@ validatePassword = (p) => {
     return true;
 }
 
-
+componentDidMount(){
+    this.props.fetchRoles();
+}
 render(){
 
     return (
@@ -77,12 +80,7 @@ render(){
                 </Modal.Header>
                 <Modal.Body>
                     <Formik
-                        initialValues={{
-                            userName: this.props.values ? this.props.values.userName : '',
-                            email: this.props.values ? this.props.values.email : '',
-                            password: this.props.values ? this.props.values.password : '',
-                            phoneNumber: this.props.values ? this.props.values.phoneNumber : '',
-                        }}
+                        initialValues={this.initialValues}
                         validate={values => {
                             const errors = {};
                             if (!values.email) {
@@ -173,6 +171,26 @@ render(){
                                         {errors.password && touched.password && errors.password}
                                     </Form.Text>
                                 </Form.Group>
+                                { this.props.roles.roles ? this.props.roles.roles.map((item, index) =>
+                            <Form.Check
+                                type='checkbox'
+                                label={item.roleName}
+                                id={item.id}
+                                key={index}
+                                onChange={(event) => {
+                                    if (event.target.checked == true) {
+                                        values.roles.push(item.id);
+                                    } else {
+                                        var index = values.roles.indexOf(item.id);
+                                        if (index > -1) {
+                                            values.roles.splice(index, 1);
+                                        }
+
+                                    }
+
+                                }}
+                            />
+                        ) : ""}
                                 <Button type="submit" disabled={isSubmitting} variant="primary">Submit</Button>
                             </Form>
                         )}
@@ -188,9 +206,10 @@ render(){
 const mapStateToProps = state => {
     return {
       login: state.login.accessToken ? state.login.accessToken : [],
-      users: state.users ? state.users :[]
+      users: state.users ? state.users :[],
+      roles: state.roles ? state.roles : []
       
     }
   };
 
-export default connect(mapStateToProps, {updateUserValues, fetchUsers})(Edituser);
+export default connect(mapStateToProps, {fetchRoles, updateUserValues, fetchUsers})(Edituser);

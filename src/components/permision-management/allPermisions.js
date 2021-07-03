@@ -8,7 +8,7 @@ import styles from './permissions.module.css';
 import EditPermision from './editPermisionModal';
 import axios from 'axios';
 import DeletePermissionModal from './deletPermission';
-import {fetchPermissions, fetchPermissionsByLimit} from '../../redux/reducers/permissionsReducer';
+import {fetchPermissions, fetchPermissionsByLimit, getPermissionById} from '../../redux/reducers/permissionsReducer';
 import {Constants} from '../../constatnts';
 import { connect} from 'react-redux'
 class Permissions extends React.Component {
@@ -45,19 +45,14 @@ class Permissions extends React.Component {
   // open modal to edit user
   handleShow (Id) {
     console.log(Id);
-    let token = this.state.login;
-    const requestOptions = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
-    };
-    axios.get( Constants.testBaseUrl +`/Account/GetPermissionMasterByIdAsync/?id=${Id}`, { headers: requestOptions })
-      .then(response => {
-        if (response.data.data) {
-          this.setState({showEdit : { show: true, id: Id, values: response.data.data[0] }});
-        } else if (response.data.error) {
-          alert(response.data.error);
-        }
-      })
+   this.props.getPermissionById(Id).then(res =>{
+      if(res.data){
+        this.setState({showEdit : { show: true, id: Id, values: res.data[0] }});
+      } else{
+        console.log(res);
+      }
+    });
+   
   }
 
  columns = ["S.no", "Name", "Edit", "delete", "select"];
@@ -105,7 +100,9 @@ handleChecked =(index) =>{
               <td>{index + 1}</td>
               <td>{item.permissionName}</td>
               {/* <td key={index} >{item.role}</td> */}
-              <td><FaIcons.FaEdit onClick={() => this.handleShow(index + 1)} /></td>
+              <td><FaIcons.FaEdit onClick={() => this.handleShow(item.id)
+              //  this.setState({showEdit : { show: true, id: item.Id, values: item }})
+               } /></td>
               <td><FaIcons.FaTrash onClick={() => this.deleteUser(index+1)} /></td>
               <td><InputGroup.Checkbox onChange={() => this.handleChecked(index+1) }/></td>
             </tr>
@@ -150,4 +147,4 @@ const mapStateToProps = state => {
     
   }
 };
-export default connect(mapStateToProps, {fetchPermissions, fetchPermissionsByLimit })(Permissions);
+export default connect(mapStateToProps, {fetchPermissions, fetchPermissionsByLimit, getPermissionById })(Permissions);

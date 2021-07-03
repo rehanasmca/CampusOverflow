@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { InputGroup } from 'react-bootstrap';
 import * as FaIcons from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
-import Edituser from './edituser';
-import styles from './users.module.css';
-import axios from 'axios';
-import DeleteModal from './deleteModal';
-import { fetchUsers, fetchUsersByLimit } from '../../redux/reducers/usersReducer';
-import {Constants} from '../../constatnts';
+import EditUniversity from './editUniversity';
+import styles from './university.module.css';
+import DeleteUniversity from './deletUniversity';
+import { fetchUniversities, fetchUniversitiesByLimit, getUniversityById } from '../../redux/reducers/universityReducer';
 import { connect} from 'react-redux'
-class Users extends React.Component {
+class Universities extends React.Component {
   constructor(props){
     super(props);
     this.state = { showEdit: { show: false, id: 0, values: '' }, showDelete:{ show: false, id: 0, values: '' } }
@@ -25,41 +23,33 @@ class Users extends React.Component {
   }
 
   getData(){
-    this.props.fetchUsers();
-    console.log(this.props)
+    this.props.fetchUniversities();
   }
 
   // to add pagination
   addPagination(){
- for (let i = 1; i <= this.props.users.users.totalPages; i++) {
+ for (let i = 1; i <= Math.ceil(50/ 10); i++) {
     this.pageNumbers.push(i);
   };
 }
 
 // get users when change page
  handleChangePage = (id) => {
-   this.props.fetchUsersByLimit(id);
+   this.props.fetchUniversitiesByLimit(id);
   }
 
-  // open modal to edit user
+  // open modal to edit country
   handleShow (Id) {
     console.log(Id);
     let token = this.state.login;
-    const requestOptions = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
-    };
-    axios.get( Constants.testBaseUrl +`/Account/GetUserMasterByIdAsync/${Id}`, { headers: requestOptions })
-      .then(response => {
-        if (response.data.data) {
-          this.setState({showEdit : { show: true, id: Id, values: response.data.data[0] }});
-        } else if (response.data.error) {
-          alert(response.data.error);
-        }
-      })
+    this.props.getUniversityById(Id).then(res =>{
+      console.log(res);
+        this.setState({showEdit : { show: true, id: Id, values: res.data[0] }});
+      
+    })
   }
 
- columns = ["S.no", "Name", "Edit user", "delete", "select"];
+ columns = ["S.no", "Name", "Edit country", "delete", "select"];
 
 //  to open delet modal
   handleDeletShow (id) {
@@ -98,25 +88,25 @@ handleChecked =(index) =>{
           </tr>
         </thead>
         <tbody>
-          { this.props.users.users.lstData ? this.props.users.users.lstData.map((item, index) => (
+          {this.props.universities.universities.map((item, index) => (
             <tr key={index} onClick={() => console.log(index, item)}>
               <td>{index + 1}</td>
-              <td>{item.userName}</td>
+              <td>{item.universityName}</td>
               <td><FaIcons.FaEdit onClick={() => this.handleShow(item.id)} /></td>
               <td><FaIcons.FaTrash onClick={() => this.deleteUser(item.id)} /></td>
               <td><InputGroup.Checkbox onChange={() => this.handleChecked(item.id) }/></td>
             </tr>
-          )) : ''}
+          ))}
         </tbody>
       </Table>
-      <Edituser history=''
+      <EditUniversity history=''
         show={this.state.showEdit.show}
         onHide={() => this.setState({ showEdit : {show: false} })}
         id={this.state.showEdit.id}
         values={this.state.showEdit.values}
       />
 
-      <DeleteModal history=''
+      <DeleteUniversity history=''
         show={this.state.showDelete.show}
         onHide={() => this.setState({showDelete : {show: false}})}
         id={this.state.showDelete.id}
@@ -141,8 +131,8 @@ handleChecked =(index) =>{
 const mapStateToProps = state => {
   return {
     login: state.login.accessToken ? state.login.accessToken : [],
-    users: state.users ? state.users :[]
+    universities: state.universities ? state.universities :[]
     
   }
 };
-export default connect(mapStateToProps, {fetchUsers, fetchUsersByLimit })(Users);
+export default connect(mapStateToProps, {fetchUniversities, fetchUniversitiesByLimit, getUniversityById })(Universities);

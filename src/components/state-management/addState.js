@@ -3,12 +3,13 @@ import { Formik } from 'formik';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Classes from './countries.module.css';
+import Classes from './states.module.css';
 import { connect } from 'react-redux';
-import { fetchCountries, CreateNewCountry } from '../../redux/reducers/countriesReducer';
+import { fetchCountries } from '../../redux/reducers/countriesReducer';
+import { fetchStates, CreateNewState } from '../../redux/reducers/statesReducer';
 import * as Yup from 'yup';
 
-class AddCountry extends React.Component {
+class AddState extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -16,47 +17,56 @@ class AddCountry extends React.Component {
 
 
     initialValues = {
-        countryName: "",
-        metaKeyWords: "",
-        metaDescription: "",
-        metaTitle: "",
-        dateInserted: new Date(),
-        dateUpdated: new Date(),
-        active: true,
-        deleted: false
+            stateName: "",
+            countryId: 1,
+            metaKeyWords: "",
+            metaDescription: "",
+            metaTitle: "",
+            dateInserted: new Date(),
+            dateUpdated: new Date(),
+            active: true,
+            deleted: false
     };
 
     validationSchema = Yup.object().shape({
-        countryName: Yup.string()
+        stateName: Yup.string()
             .min(3, 'Too Short!')
             .max(30, 'Too Long!')
             .required('Required'),
-        metaKeyWords: Yup.string()
-            .min(3, 'Too Short!')
-            .max(30, 'Too Long!')
+            countryId: Yup.string()
             .required('Required'),
-        metaDescription: Yup.string().required('Required')
-            .min(3, 'Too short!').max(50, 'Too Long'),
-        metaTitle: Yup.string()
+            metaKeyWords: Yup.string()
+            .min(3, 'Too Short')
+            .max(30, 'Too Long').required('Required'),
+            metaDescription: Yup.string()
+            .min(3, 'Too Short')
+            .max(50, 'Too Long').required('Required'),
+            metaTitle: Yup.string()
             .min(3, 'Too Short')
             .max(30, 'Too Long').required('Required')
+    
     });
+    
+    componentDidMount(){
+        this.props.fetchCountries();
+    }
 
 
     render() {
         return (<div className={Classes.maindiv}>
-            <h1>User Registration form</h1>
+            <h1>Add New State form</h1>
             <Formik
                 initialValues={this.initialValues}
                 validationSchema={this.validationSchema}
                 // when submit form
                 onSubmit={(values, { setSubmitting }) => {
-                    this.props.CreateNewCountry(values).then(res => {
+                    console.log(values)
+                    this.props.CreateNewState(values).then(res => {
                         if (res.data) {
                             setSubmitting(false);
-                            this.props.fetchCountries();
+                            this.props.fetchStates();
                         } else {
-                            console.log("error");
+                            console.log(res);
                         }
                     });
                 }}
@@ -73,15 +83,28 @@ class AddCountry extends React.Component {
 
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Country Name</Form.Label>
+                            <Form.Label>State Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="countryName"
+                                name="stateName"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.countryName} className={Classes.formInput} />
+                                value={values.stateName} className={Classes.formInput} />
                             <Form.Text className="text-muted">
-                                {errors.countryName && touched.countryName && errors.countryName}
+                                {errors.stateName && touched.stateName && errors.stateName}
+                            </Form.Text>
+                        </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Country Id</Form.Label>
+                            <Form.Control as="select"
+                                name="countryId"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.countryId} className={Classes.formInput}>
+                                {this.props.countries.countries ? this.props.countries.countries.map((item, index) => <option value={item.id}>{item.countryName}</option>) : ''}
+                            </Form.Control>
+                            <Form.Text className="text-muted">
+                                {errors.countryId && touched.countryId && errors.countryId}
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
@@ -131,4 +154,11 @@ class AddCountry extends React.Component {
     }
 }
 
-export default connect('', { CreateNewCountry, fetchCountries })(AddCountry);
+const mapStateToProps = state => {
+    return {
+      countries: state.countries ? state.countries :[],
+      states: state.states ? state.states :[] 
+      
+    }
+  };
+export default connect(mapStateToProps, { fetchStates, CreateNewState, fetchCountries })(AddState);

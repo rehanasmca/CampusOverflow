@@ -17,7 +17,7 @@ function DeletePermissionModal(props) {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token
     };
-    axios.post(Constants.testBaseUrl +`/Account/DeletePermissionMaster/?id=${id}`, { headers: requestOptions })
+    axios.post(Constants.testBaseUrl +`/Account/DeletePermissionMaster/${id}`, { headers: requestOptions })
         .then(response => {
             if (response.data.data) {
                 alert("added user successfully");

@@ -27,14 +27,13 @@ export const UsersReducer = (state = initialState, action) => {
 
 export function fetchUsers() {
   return async function getData(dispatch, getState) {
-    const oldState = getState();
-    let t =JSON.parse(localStorage.getItem("userData"))
+   let t =JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
     const requestOptions = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.get(Constants.testBaseUrl + "/Account/GetAllUserMasterAsync/?pagendex=0&pageSize=10&showHidden=false", { headers: requestOptions })
+    const response = await axios.get(Constants.testBaseUrl + "/Account/GetAllUserMasterAsync/0/10/true", { headers: requestOptions })
       .then(response => response);
 
     dispatch({ type: ActionTypes.GET_USER_SUCCESSFULLY, payload: response.data.data })
@@ -95,9 +94,9 @@ export function updateUserValues(values) {
       phoneNumber: values.phoneNumber,
       dateInserted: values.dateInserted,
       dateUpdated: new Date(),
-      active: true,
-      deleted: false,
-      roles: []
+      active: values.active,
+      deleted: values.deleted,
+      roles: values.roles
     }
 
     const response = await axios.post(Constants.testBaseUrl + "/Account/UpdateUserMaster", data, { headers: requestOptions })

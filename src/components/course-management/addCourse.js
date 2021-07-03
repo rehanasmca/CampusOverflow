@@ -3,12 +3,12 @@ import { Formik } from 'formik';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Classes from './countries.module.css';
+import Classes from './courses.module.css';
 import { connect } from 'react-redux';
-import { fetchCountries, CreateNewCountry } from '../../redux/reducers/countriesReducer';
+import { CreateNewCourse, fetchCourses } from '../../redux/reducers/coursesReducer';
 import * as Yup from 'yup';
 
-class AddCountry extends React.Component {
+class AddCourse extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -16,7 +16,9 @@ class AddCountry extends React.Component {
 
 
     initialValues = {
-        countryName: "",
+        name: "",
+        abbreviation: "",
+        fees: "",
         metaKeyWords: "",
         metaDescription: "",
         metaTitle: "",
@@ -27,19 +29,25 @@ class AddCountry extends React.Component {
     };
 
     validationSchema = Yup.object().shape({
-        countryName: Yup.string()
+        name: Yup.string()
             .min(3, 'Too Short!')
             .max(30, 'Too Long!')
             .required('Required'),
-        metaKeyWords: Yup.string()
+            abbreviation: Yup.string()
             .min(3, 'Too Short!')
-            .max(30, 'Too Long!')
+            .max(100, 'Too Long!')
             .required('Required'),
-        metaDescription: Yup.string().required('Required')
-            .min(3, 'Too short!').max(50, 'Too Long'),
-        metaTitle: Yup.string()
+            fees: Yup.string().required('Required'),
+            metaKeyWords: Yup.string()
+            .min(3, 'Too Short')
+            .max(30, 'Too Long').required('Required'),
+            metaDescription: Yup.string()
+            .min(3, 'Too Short')
+            .max(50, 'Too Long').required('Required'),
+            metaTitle: Yup.string()
             .min(3, 'Too Short')
             .max(30, 'Too Long').required('Required')
+    
     });
 
 
@@ -51,10 +59,10 @@ class AddCountry extends React.Component {
                 validationSchema={this.validationSchema}
                 // when submit form
                 onSubmit={(values, { setSubmitting }) => {
-                    this.props.CreateNewCountry(values).then(res => {
+                    this.props.CreateNewCourse(values).then(res => {
                         if (res.data) {
                             setSubmitting(false);
-                            this.props.fetchCountries();
+                            this.props.fetchCourses();
                         } else {
                             console.log("error");
                         }
@@ -73,15 +81,39 @@ class AddCountry extends React.Component {
 
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Country Name</Form.Label>
+                            <Form.Label>Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="countryName"
+                                name="name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.countryName} className={Classes.formInput} />
+                                value={values.name} className={Classes.formInput} />
                             <Form.Text className="text-muted">
-                                {errors.countryName && touched.countryName && errors.countryName}
+                                {errors.name && touched.name && errors.name}
+                            </Form.Text>
+                        </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Abbreviation</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="abbreviation"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.abbreviation} className={Classes.formInput} />
+                            <Form.Text className="text-muted">
+                                {errors.abbreviation && touched.abbreviation && errors.abbreviation}
+                            </Form.Text>
+                        </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Fees</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="fees"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.fees} className={Classes.formInput} />
+                            <Form.Text className="text-muted">
+                                {errors.fees && touched.fees && errors.fees}
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
@@ -131,4 +163,4 @@ class AddCountry extends React.Component {
     }
 }
 
-export default connect('', { CreateNewCountry, fetchCountries })(AddCountry);
+export default connect('', { CreateNewCourse, fetchCourses })(AddCourse);

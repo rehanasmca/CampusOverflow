@@ -24,6 +24,19 @@ import AddPermission from './components/permision-management/addPermission';
 import NavBar from './components/navbar2';
 import Users from './components/users-component/users';
 import AddRole from './components/roles-management/addRole';
+import Countries from './components/countries/allCountries';
+import AddCountry from './components/countries/addCountry';
+import Universities from './components/university-management/allUniversities';
+import AddUniversity from './components/university-management/addUniversity';
+import RoleMapPermissions from './components/role-map-permissions-management/roleMapPermissions';
+import ALLSettings from './components/settings-management/allSettings';
+import AddSettings from './components/settings-management/addSettings';
+import AllCourses from './components/course-management/allCourses';
+import AddCourse from './components/course-management/addCourse';
+import AddCity from './components/city-management/addCity';
+import AllCities from './components/state-management/allStates';
+import AddState from './components/state-management/addState';
+import AllStates from './components/state-management/allStates';
 class App extends React.Component {
 
   render() {
@@ -47,6 +60,19 @@ class App extends React.Component {
               <Route exact path='/permissions' component={Permissions}></Route>
               <Route exact path='/addPermission' component={AddPermission}></Route>
               <Route exact path='/addRole' component={AddRole}></Route>
+              <Route exact path='/countries' component={Countries}></Route> 
+              <Route exact path='/addCountry' component={AddCountry}></Route> 
+              <Route exact path='/universities' component={Universities}></Route> 
+              <Route exact path='/addUniversity' component={AddUniversity}></Route> 
+              <Route exact path='/roleMapPermissions' component={RoleMapPermissions}></Route> 
+              <Route exact path='/settings' component={ALLSettings}></Route> 
+              <Route exact path='/addSettings' component={AddSettings}></Route> 
+              <Route exact path='/allCourses' component={AllCourses}></Route> 
+              <Route exact path='/addCourse' component={AddCourse}></Route> 
+              <Route exact path='/addCity' component={AddCity}></Route> 
+              <Route exact path='/allCities' component={AllCities}></Route> 
+              <Route exact path='/state' component={AllStates}></Route> 
+              <Route exact path='/addState' component={AddState}></Route> 
            
             </Switch>
 

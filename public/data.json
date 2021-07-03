@@ -2,36 +2,83 @@
     "home": {
         "pathName": "/home"
     },
-    "User management" : {
+    "Area management": {
         "isOpen": false,
-        "users" : {
+        "Cities": {
             "isOpen": false,
-            "Add user" :{
-                "pathName" : "/adduser"
+            "Add city": {
+                "pathName": "/addCity"
             },
-            "View/Edit user " :{
+            "View/Edit city ": {
+                "pathName": "/allCities"
+            }
+        },
+        "States": {
+            "isOpen": false,
+            "Add State": {
+                "pathName": "/addState"
+            },
+            "View/Edit state ": {
+                "pathName": "/state"
+            }
+        }
+    },
+    "User management": {
+        "isOpen": false,
+        "users": {
+            "isOpen": false,
+            "Add user": {
+                "pathName": "/adduser"
+            },
+            "View/Edit user ": {
                 "pathName": "/users"
             }
         },
-        "Roles" : {
+        "Roles": {
             "isOpen": false,
-            "Add Role" :{
-                "pathName" : "/addRole"
+            "Add Role": {
+                "pathName": "/addRole"
             },
-            "View/Edit role " :{
+            "View/Edit role ": {
                 "pathName": "/roles"
             }
         },
-        "Permissions" : {
+        "Permissions": {
             "isOpen": false,
-            "Add Permission" :{
-                "pathName" : "/addPermission"
+            "Add Permission": {
+                "pathName": "/addPermission"
             },
-            "View/Edit permission " :{
+            "View/Edit permission ": {
                 "pathName": "/permissions"
             }
+        },
+        "countries": {
+            "isOpen": false,
+            "Add Country": {
+                "pathName": "/addCountry"
+            },
+            "View/Edit Country ": {
+                "pathName": "/countries"
+            }
+        },
+        "Universities": {
+            "isOpen": false,
+            "Add University": {
+                "pathName": "/addUniversity"
+            },
+            "View/Edit University": {
+                "pathName": "/universities"
+            }
+        },
+        "Settings": {
+            "isOpen": false,
+            "Add Settings": {
+                "pathName": "/addSettings"
+            },
+            "View/Edit Settings": {
+                "pathName": "/settings"
+            }
         }
-        
     },
     "products": {
         "isOpen": false,
@@ -49,53 +96,40 @@
         },
         "clothes": {
             "isOpen": false,
-            "men" : {
+            "men": {
                 "isOpen": false,
-                "official" : {
+                "official": {
                     "isOpen": false,
                     "branded": {
-                        "pathName" : "/products"
+                        "pathName": "/products"
                     },
                     "normal": {
-                        "pathName" : "/nobrands"
+                        "pathName": "/nobrands"
                     }
-                   
                 },
-                "nightWear" : {
-                    "pathName" : "/nightwear"
+                "nightWear": {
+                    "pathName": "/nightwear"
                 }
             },
-            "women" : {
+            "women": {
                 "isOpen": false,
-                "garments" : {
-                    "isOpen" : false,
-                    "accessories" : {
-                        "pathName" : "/accessories"
+                "garments": {
+                    "isOpen": false,
+                    "accessories": {
+                        "pathName": "/accessories"
                     },
-                    "beauty products" : {
+                    "beauty products": {
                         "pathName": "/beauty"
                     }
                 },
-                "officialWomen" : {
-                    "pathName" : "/officialWomen"
+                "officialWomen": {
+                    "pathName": "/officialWomen"
                 },
-                "nightWearWomen" : {
-                    "pathName" : "/nightwearWomen"
+                "nightWearWomen": {
+                    "pathName": "/nightwearWomen"
                 }
             }
         }
-    },
-    "services": {
-        "isOpen" : false,
-        "developing" : {
-            "products" : {
-                "pathName": "/software products"
-            },
-            "testing" : {
-                "pathName" : "/testing"
-            }
-        }
-       
     },
     "About": {
         "pathName": "/home"

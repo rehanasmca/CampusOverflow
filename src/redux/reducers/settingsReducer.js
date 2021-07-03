@@ -3,39 +3,40 @@ import { ActionTypes } from "../constants/action-types";
 import axios from 'axios';
 import { Constants } from '../../constatnts';
 const initialState = {
-  countries: []
+  settings: []
 }
-export const CountriesReducer = (state = initialState, action) => {
+export const SettingsReducer = (state = initialState, action) => {
   console.log(state, action.payload);
   switch (action.type) {
-    case ActionTypes.GET_ALL_COUNTRIES_SUCCESS:
+    case ActionTypes.GET_ALL_SETTINGS_SUCCESS:
       let actions = action.payload;
       console.log(actions)
       return {
-        countries: actions
+        settings: actions
       }
 
     default: return state
   }
 }
 
-export function fetchCountries() {
+// get all settings
+export function fetchSettings() {
   return async function getData(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
     const requestOptions = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token ///Public/CreateCountryMasterAsync
+      'Authorization': 'Bearer ' + token 
     };
-    const response = await axios.get(Constants.testBaseUrl + "/Public/GetCountryMasterByIdAsync/1", { headers: requestOptions })
+    const response = await axios.get(Constants.testBaseUrl + "/Account/GetAllSettingAsync", { headers: requestOptions })
       .then(response => response);
 
     dispatch({ type: ActionTypes.GET_ALL_COUNTRIES_SUCCESS, payload: response.data.data })
   }
 }
 
-//   get users by passing skip limit
-export function fetchUsersByLimit(values) {
+//   get all settings by passing index size
+export function fetchSettingsByLimit(values) {
   return async function getUsers(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
@@ -45,12 +46,12 @@ export function fetchUsersByLimit(values) {
     };
     const response = await axios.get(Constants.testBaseUrl + '/Public/GetCountryMasterByIdAsync/1', { headers: requestOptions })
       .then(response => response);
-    dispatch({ type: ActionTypes.GET_ALL_COUNTRIES_SUCCESS, payload: response.data.data })
+    dispatch({ type: ActionTypes.GET_ALL_SETTINGS_SUCCESS, payload: response.data.data })
   }
 }
 
-// get counntry by id 
-export function getCountryById(id) {
+// get settings by id 
+export function getSettingsById(id) {
   return async function getData(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
@@ -58,7 +59,7 @@ export function getCountryById(id) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.get(Constants.testBaseUrl + `/Public/GetCountryMasterByIdAsync/${id}`, { headers: requestOptions })
+    const response = await axios.get(Constants.testBaseUrl + `/Account/GetSettingByIdAsync/${id}`, { headers: requestOptions })
       .then(response => {
         if (response.data.data) {
           return response.data;
@@ -68,7 +69,7 @@ export function getCountryById(id) {
         }
       })
       .catch(err => {
-        return  err.message ;
+        return { type: "error", body: { message: err.message } };
       })
     return response;
   }
@@ -76,7 +77,7 @@ export function getCountryById(id) {
 }
 
 // delete user by id
-export function deleteCountryByID(values) {
+export function deleteSettingsByID(id) {
   return async function deleteCountry(dispatch, getState) {
     const oldState = getState();
     let t = JSON.parse(localStorage.getItem("userData"))
@@ -85,7 +86,7 @@ export function deleteCountryByID(values) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.post(Constants.testBaseUrl + `/Public/DeleteCountryMasterAsync/${values}`, { headers: requestOptions })
+    const response = await axios.post(Constants.testBaseUrl + `/Account​/DeleteSettingAsync​/${id}`, { headers: requestOptions })
       .then(response => {
         if (response.data.data) {
           return response.data;
@@ -104,7 +105,7 @@ export function deleteCountryByID(values) {
 }
 
 // update user
-export function updateCountryValues(values) {
+export function updateSettingsValues(values) {
   return async function updateCountryValues(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
@@ -112,7 +113,7 @@ export function updateCountryValues(values) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.post(Constants.testBaseUrl + "/Public/UpdateCountryMasterAsync", values, { headers: requestOptions })
+    const response = await axios.post(Constants.testBaseUrl + "/Account​/Updatesetting", values, { headers: requestOptions })
       .then(res => {
         if (res.data.data) {
           return res.data;
@@ -130,7 +131,7 @@ export function updateCountryValues(values) {
 
 
 // create new country
-export function CreateNewCountry(values) {
+export function CreateNewSetting(values) {
   return async function createCountry(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;

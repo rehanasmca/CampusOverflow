@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useSelector } from 'react-redux';
-import { Constants } from '../../constatnts';
-import axios from 'axios';
 import { connect} from 'react-redux';
-import {deleteUsersByID} from '../../redux/reducers/usersReducer';
+import {deleteCityByID, fetchCities} from '../../redux/reducers/citiesReducer';
 
-class DeleteModal extends Component {
+class DeleteCity extends Component {
   constructor(props){
     super(props);
     this.state= {};
@@ -20,25 +17,14 @@ class DeleteModal extends Component {
     }
    handleDeleteClick =(id) =>{
         console.log(id);
-        // this.props.deleteUsersByID(id);
-        let token = this.props.login;
-    const requestOptions = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + ''
-    };
-    axios.post(Constants.testBaseUrl +`/Account/DeleteUserMaster/${id}`, { headers: requestOptions })
-        .then(response => {
-            if (response.data.data) {
-                alert("added user successfully");
-            } else if (response.data.error) {
-                alert(response.data.error);
-            }
-
-
-            console.log(response);
-            this.handleClose();
-
-        })
+        this.props.deleteCityByID(id).then(res => {
+          if (res.data) {
+              this.props.fetchCities();
+              this.handleClose();
+          } else {
+              console.log("error")
+          }
+      });
     }
 
     render(){
@@ -51,11 +37,11 @@ class DeleteModal extends Component {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Delete user {typeof(this.props.id) == "object" ? this.props.id.map(item =>item) : this.props.id } 
+            Delete city {typeof(this.props.id) == "object" ? this.props.id.map(item =>item) : this.props.id } 
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-         <p>Are you sure to delete this user?</p>
+         <p>Are you sure to delete this city?</p>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() =>
@@ -73,5 +59,5 @@ const mapStateToProps = state =>{
     login: state.login ? state.login.accessToken : '',
     }
 }
-  export default connect(mapStateToProps, {deleteUsersByID})(DeleteModal);
+  export default connect(mapStateToProps, {deleteCityByID, fetchCities})(DeleteCity);
  
