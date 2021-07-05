@@ -9,6 +9,11 @@ import {SettingsReducer} from './settingsReducer';
 import {CoursesReducer} from './coursesReducer';
 import {CitiesReducer} from './citiesReducer';
 import {StatesReducer} from './statesReducer';
+import { EmailsReducer, QueuedEmailsReducer } from "./emailReducer";
+import { SendedEmailReducer} from './emailReducer';
+import { SMSReducer } from "./smsRducer";
+import { SMSTemplateReducer } from "./smsTemplateReducer";
+import {QueuedSMSReducer} from "./smsRducer";
 const Reducers = combineReducers({
     login: LoginReducer,
     roles: RolesReducer,
@@ -20,5 +25,11 @@ const Reducers = combineReducers({
     courses: CoursesReducer,
     cities: CitiesReducer,
     states: StatesReducer,
+    emails: EmailsReducer,
+    sendedemails : SendedEmailReducer,
+    sms: SMSReducer,
+    smsTemplates : SMSTemplateReducer,
+    queuedSms: QueuedSMSReducer,
+    queuedemails: QueuedEmailsReducer
 });
 export default Reducers;

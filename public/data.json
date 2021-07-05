@@ -21,7 +21,32 @@
             "View/Edit state ": {
                 "pathName": "/state"
             }
+        },
+        "Email" :{
+            "isOpen": false,
+            "Create Email":{
+                "pathName" : "/createEmail"
+            },
+            "Add queued email":{
+                "pathName" : "/addQueuedEmail"
+            },
+            "View Emails": {
+                "pathName" :"/allEmails"
+            },
+            "View Queued Emails": {
+                "pathName": "/allQueuedEmails"
+            },
+            "Sended sms" : {
+                "isOpen": false,
+                "Create SMS":{
+                    "pathName": "/addSms"
+                },
+                "All Sended SMS": {
+                    "pathName": "/allSendedSMS"
+                }
+            }
         }
+
     },
     "User management": {
         "isOpen": false,
