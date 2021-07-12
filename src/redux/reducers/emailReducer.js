@@ -178,6 +178,34 @@ export function deleteEmailByID(id) {
   }
 }
 
+// delet queued email /Communication/DeleteQueuedEmailAsync/{id}
+export function deleteQueuedEmailByID(id) {
+  return async function deleteQueuedEmail(dispatch, getState) {
+    const oldState = getState();
+    let t = JSON.parse(localStorage.getItem("userData"))
+    let token = t.accessToken;
+    const requestOptions = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    };
+    const response = await axios.post(Constants.testBaseUrl + `/Communication/DeleteQueuedEmailAsync/${id}`, { headers: requestOptions })
+      .then(response => {
+        if (response.data.data) {
+          return response.data;
+
+        } else {
+           return "something went wrong";
+        }
+      })
+      .catch(err => {
+        return err.message;
+
+      })
+
+    return response;
+  }
+}
+
 // update state
 export function updateEmail(values) {
   return async function updateEmailValues(dispatch, getState) {

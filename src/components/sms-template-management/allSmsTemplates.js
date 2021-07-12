@@ -3,19 +3,19 @@ import Table from 'react-bootstrap/Table';
 import { InputGroup } from 'react-bootstrap';
 import * as FaIcons from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
-import EditQueuedEmail from './editQueuedEmails';
-import styles from './email.module.css';
-import DeleteQueuedEmail from './deleteQueuedEmail';
-import { fetchQueuedEmails, getQueuedEmailById } from '../../redux/reducers/emailReducer';
+import EditSmsTemplate from './editSmsTemplate';
+import styles from './smsTemplate.module.css';
+import DeleteSmsTemplate from './deleteSmsTemplate';
+import { fetchSMSTemplates,fetchSMSTemplateByLimit, getSmsTemplateById } from '../../redux/reducers/smsTemplateReducer';
+import { fetchRoles } from '../../redux/reducers/rolesReducer';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import EditMultiple from './editMultiple'
 import 'react-toastify/dist/ReactToastify.css';
 
-class AllQueuedEmails extends React.Component {
+class AllSmsTemplates extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { showEdit: { show: false, id: 0, values: '' }, showDelete: { show: false, id: 0, values: '' }, showMultiEdit: { show: false, id: 0, values: '' } }
+        this.state = { showEdit: { show: false, id: 0, values: '' }, showDelete: { show: false, id: 0, values: '' } }
         this.handleDeletShow = this.handleDeletShow.bind(this);
     }
     pageNumbers = [];
@@ -23,11 +23,12 @@ class AllQueuedEmails extends React.Component {
     componentDidMount() {
         this.getData();
         this.addPagination();
+        this.props.fetchRoles();
 
     }
 
     getData() {
-        this.props.fetchQueuedEmails();
+        this.props.fetchSMSTemplates();
     }
 
     // to add pagination
@@ -39,13 +40,13 @@ class AllQueuedEmails extends React.Component {
 
     // get users when change page
     handleChangePage = (id) => {
-        this.props.fetchUsersByLimit(id);
+        this.props.fetchSMSTemplateByLimit(id);
     }
 
     // open modal to edit country
     handleShow(Id) {
         console.log(Id);
-        this.props.getQueuedEmailById(Id).then(res => {
+        this.props.getSmsTemplateById(Id).then(res => {
             console.log(res);
             if (res.data) {
                 toast.success("get course success");
@@ -53,61 +54,36 @@ class AllQueuedEmails extends React.Component {
             } else {
                 toast.error(res)
             }
-
-
         })
     }
 
-    columns = ["S.no", "From Name", "To Name", "Edit", "Edit Multiple", "delete", "select"];
+    columns = ["S.no", "Name", "role id", "Edit", "delete", "select"];
 
     //  to open delet modal
     handleDeletShow(id) {
         this.setState({ showDelete: { show: true, id: id } });
     }
 
-    handleEditShow(ids) {
-        this.setState({ showMultiEdit: { show: true, id: ids } });
-
-    }
     deleteUser = (index) => {
         this.handleDeletShow(index);
 
         console.log(index);
     }
     ids = [];
-    Editids = [];
     handleChecked = (index) => {
         this.ids.push(index);
         console.log(index, this.ids)
     }
-
-    handleEditChecked = (index) => {
-        this.Editids.push(index);
-        console.log(index, this.Editids)
-
-    }
-
     // To delete multiple users
     handleDeletAll = () => {
         if (this.ids.length > 0) {
-
             this.handleDeletShow(this.ids);
-
-        }
-    }
-
-    //   edit multiple
-    handleEditAll = () => {
-        if (this.Editids.length > 0) {
-            this.handleEditShow(this.Editids);
         }
     }
     render() {
         return (
             <div>
                 <Button variant="primary" onClick={this.handleDeletAll}>Delete all</Button>
-                <Button variant="primary" onClick={this.handleEditAll}>Edit multiple</Button>
-
                 <Table responsive>
                     <thead>
                         <tr>
@@ -117,34 +93,25 @@ class AllQueuedEmails extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.queuedemails.queuedemails ? this.props.queuedemails.queuedemails.map((item, index) => (
+                        {this.props.smsTemplates.smsTemplates ? this.props.smsTemplates.smsTemplates.map((item, index) => (
                             <tr key={index} onClick={() => console.log(index, item)}>
                                 <td>{index + 1}</td>
-                                <td>{item.fromName}</td>
-                                <td>{item.toName}</td>
-                                <td><FaIcons.FaEdit onClick={() => this.handleShow(item.id)} /></td>
-                                <td><InputGroup.Checkbox onChange={() => this.handleEditChecked(item.id)} /></td>
-
-                                <td><FaIcons.FaTrash onClick={() => this.deleteUser(item.id)} /></td>
-                                <td><InputGroup.Checkbox onChange={() => this.handleChecked(item.id)} /></td>
+                                <td>{item.name}</td>
+                                <td>{item.roleId}</td>
+                                <td><FaIcons.FaEdit onClick={() => this.handleShow(item.id)}/></td>
+                                <td><FaIcons.FaTrash onClick={() => this.deleteUser(item.id)}/></td>
+                                <td><InputGroup.Checkbox onChange={() => this.handleChecked(item.id)}/></td>
                             </tr>
-                        )) : ""}
+                        )) : ''}
                     </tbody>
                 </Table>
-                <EditQueuedEmail history=''
+                <EditSmsTemplate history=''
                     show={this.state.showEdit.show}
                     onHide={() => this.setState({ showEdit: { show: false } })}
                     id={this.state.showEdit.id}
                     values={this.state.showEdit.values}
                 />
-                <EditMultiple history=''
-                    show={this.state.showMultiEdit.show}
-                    onHide={() => this.setState({ showMultiEdit: { show: false } })}
-                    id={this.state.showMultiEdit.id}
-                    values={this.state.showMultiEdit.values}
-                />
-
-                <DeleteQueuedEmail history=''
+                <DeleteSmsTemplate history=''
                     show={this.state.showDelete.show}
                     onHide={() => this.setState({ showDelete: { show: false } })}
                     id={this.state.showDelete.id}
@@ -166,11 +133,11 @@ class AllQueuedEmails extends React.Component {
         )
     }
 }
-
 const mapStateToProps = state => {
     return {
-        queuedemails: state.queuedemails ? state.queuedemails : []
+        smsTemplates: state.smsTemplates?state.smsTemplates: [],
+        roles: state.roles ? state.roles : []
 
     }
 };
-export default connect(mapStateToProps, { fetchQueuedEmails, getQueuedEmailById })(AllQueuedEmails);
+export default connect(mapStateToProps, { fetchSMSTemplates,fetchSMSTemplateByLimit, getSmsTemplateById, fetchRoles  })(AllSmsTemplates);

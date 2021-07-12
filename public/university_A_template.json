@@ -1,0 +1,48 @@
+{
+    "universityName": "University name",
+    "logo": "/logo.png",
+    "establishYear": "1990",
+    "location": "Delhi",
+    "courses": {
+        "BatchlorDegrees": {
+            "science": [
+                "Batchlor of science",
+                "BSC computers",
+                "BSC physics"
+            ],
+            "commerce": ["B.COM", "BBA"]
+        },
+        "pgCourses": {
+            "science": ["MCA", "MSC"],
+            "commerce" : ["MBA"]
+        }
+    },
+    "mainheading": "Learn React Hooks",
+    "mainConcept": {
+        "heading": "React Hooks cheat sheet: Best practices and examples",
+        "content": "This React Hooks cheat sheet includes a lot of code snippets and assumes some Hooks fluency. If you’re completely new to Hooks, you may want to start with our Included in this React Hooks cheat sheet are best practices related to the following Hooks:",
+        "image": ""
+    },
+    "subConcept": {
+        "0": {
+            "subHeading": "useState",
+            "content": "useState lets you use local state within a function component. You pass the initial state to this function and it returns a variable with the current state value (not necessarily the initial state) and another function to update this value.",
+            "image": ""
+        },
+        "1": {
+            "subHeading": "useEffect",
+            "content": "With useEffect, you invoke side effects from within functional components, which is an important concept to understand in the React Hooks era.",
+            "image": ""
+        },
+        "2": {
+            "subHeading": "useContext",
+            "content": "useContext saves you the stress of having to rely on a Context consumer. React Context has a simpler API when compared to MyContext.Consumer and the render props API it exposes.",
+            "image": ""
+        }
+    },
+
+    "links":{
+        "0": "https://blog.logrocket.com",
+        "1": "https://blog.logrocket.com"
+    }
+}

@@ -13,9 +13,9 @@ class EditEmail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-       console.log("email")
+        console.log("email")
     }
-    handleClose =()=>{
+    handleClose = () => {
         this.props.onHide();
     }
 
@@ -88,7 +88,7 @@ class EditEmail extends React.Component {
                                 if (!values.userName) {
                                     errors.userName = 'Required'
                                 }
-                               
+
                                 if (!values.host) {
                                     errors.host = 'Required'
                                 }
@@ -103,10 +103,25 @@ class EditEmail extends React.Component {
                                 }
                                 return errors;
                             }}
-            
+
                             onSubmit={(values, { setSubmitting }) => {
+                                let data = {
+                                    id: values.id,
+                                    displayName: values.displayName ? values.displayName : '' ,
+                                    email: values.email ? values.email : '' ,
+                                    host: values.host ? values.host : '' ,
+                                    userName: values.userName ? values.userName : '' ,
+                                    password: values.password ? values.password : '' ,
+                                    port: values.port ? values.port : '' ,
+                                    enableSSL: values.enableSSL ,
+                                    useDefaultCredential: values.useDefaultCredential,
+                                    dateInserted: values.dateInserted ? values.dateInserted : '' ,
+                                    dateUpdated: new Date(),
+                                    active: values.active,
+                                    deleted: values.deleted 
+                                }
                                 setSubmitting(false);
-                                this.props.updateEmail(values).then(res => {
+                                this.props.updateEmail(data).then(res => {
                                     if (res.data) {
                                         this.props.fetchQueuedEmails();
                                         this.handleClose();
@@ -130,139 +145,139 @@ class EditEmail extends React.Component {
 
                                 <Form onSubmit={handleSubmit}>
                                     <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Display Name</Form.Label>
-                            <Form.Control
-                                type="string"
-                                name="displayName"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.displayName} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.displayName && touched.displayName && errors.displayName}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="email"
-                                name="email"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.email} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.email && touched.email && errors.email}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Host</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="host"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.host} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.host && touched.host && errors.host}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>User Name</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="userName"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.userName} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.userName && touched.userName && errors.userName}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="password"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.password} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.password && touched.password && errors.password}
-                            </Form.Text>
-                        </Form.Group>
-                       
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Port</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="port"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.port} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.port && touched.port && errors.port}
-                            </Form.Text>
-                        </Form.Group> 
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Enable SSL</Form.Label>
-                            <Form.Check
-                            checked={values.enableSSL ? true : false}
-                                type='radio'
-                                label='true'
-                                id='1'
-                                key='1'
-                                onChange={(event) => {
-                                    if (event.target.checked == true) {
-                                        values.enableSSL = true;
-                                    }
-                                }}
-                            />
-                             <Form.Check
-                             checked={!values.enableSSL ? true : false}
-                                type='radio'
-                                label='False'
-                                id='2'
-                                key='2'
-                                onChange={(event) => {
-                                    if (event.target.checked == true) {
-                                        values.enableSSL = false;
-                                    }
-                                }}
-                            />
-                             <Form.Text className="text-muted">
-                                {errors.enableSSL && touched.enableSSL && errors.enableSSL}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Use Default Credential</Form.Label>
-                            <Form.Check
-                            checked={values.useDefaultCredential ? true : false}
-                                type='radio'
-                                label='true'
-                                id='1'
-                                key='1'
-                                onChange={(event) => {
-                                    if (event.target.checked == true) {
-                                        values.useDefaultCredential = true;
-                                    }
-                                }}
-                            />
-                             <Form.Check
-                             checked={!values.useDefaultCredential ? true : false}
-                                type='radio'
-                                label='False'
-                                id='2'
-                                key='2'
-                                onChange={(event) => {
-                                    if (event.target.checked == true) {
-                                        values.useDefaultCredential = false;
-                                    }
-                                }}
-                            />
-                             <Form.Text className="text-muted">
-                                {errors.useDefaultCredential && touched.useDefaultCredential && errors.useDefaultCredential}
-                            </Form.Text>
-                        </Form.Group>
-                        <Button type="submit" disabled={isSubmitting} variant="primary">Submit</Button>
+                                        <Form.Label>Display Name</Form.Label>
+                                        <Form.Control
+                                            type="string"
+                                            name="displayName"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.displayName} className={Classes.formInput} />
+                                        <Form.Text className="text-muted">
+                                            {errors.displayName && touched.displayName && errors.displayName}
+                                        </Form.Text>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Email</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            name="email"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.email} className={Classes.formInput} />
+                                        <Form.Text className="text-muted">
+                                            {errors.email && touched.email && errors.email}
+                                        </Form.Text>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Host</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="host"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.host} className={Classes.formInput} />
+                                        <Form.Text className="text-muted">
+                                            {errors.host && touched.host && errors.host}
+                                        </Form.Text>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>User Name</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="userName"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.userName} className={Classes.formInput} />
+                                        <Form.Text className="text-muted">
+                                            {errors.userName && touched.userName && errors.userName}
+                                        </Form.Text>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            name="password"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.password} className={Classes.formInput} />
+                                        <Form.Text className="text-muted">
+                                            {errors.password && touched.password && errors.password}
+                                        </Form.Text>
+                                    </Form.Group>
+
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Port</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="port"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.port} className={Classes.formInput} />
+                                        <Form.Text className="text-muted">
+                                            {errors.port && touched.port && errors.port}
+                                        </Form.Text>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Enable SSL</Form.Label>
+                                        <Form.Check
+                                            checked={values.enableSSL ? true : false}
+                                            type='radio'
+                                            label='true'
+                                            id='1'
+                                            key='1'
+                                            onChange={(event) => {
+                                                if (event.target.checked == true) {
+                                                    values.enableSSL = true;
+                                                }
+                                            }}
+                                        />
+                                        <Form.Check
+                                            checked={!values.enableSSL ? true : false}
+                                            type='radio'
+                                            label='False'
+                                            id='2'
+                                            key='2'
+                                            onChange={(event) => {
+                                                if (event.target.checked == true) {
+                                                    values.enableSSL = false;
+                                                }
+                                            }}
+                                        />
+                                        <Form.Text className="text-muted">
+                                            {errors.enableSSL && touched.enableSSL && errors.enableSSL}
+                                        </Form.Text>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Use Default Credential</Form.Label>
+                                        <Form.Check
+                                            checked={values.useDefaultCredential ? true : false}
+                                            type='radio'
+                                            label='true'
+                                            id='1'
+                                            key='1'
+                                            onChange={(event) => {
+                                                if (event.target.checked == true) {
+                                                    values.useDefaultCredential = true;
+                                                }
+                                            }}
+                                        />
+                                        <Form.Check
+                                            checked={!values.useDefaultCredential ? true : false}
+                                            type='radio'
+                                            label='False'
+                                            id='2'
+                                            key='2'
+                                            onChange={(event) => {
+                                                if (event.target.checked == true) {
+                                                    values.useDefaultCredential = false;
+                                                }
+                                            }}
+                                        />
+                                        <Form.Text className="text-muted">
+                                            {errors.useDefaultCredential && touched.useDefaultCredential && errors.useDefaultCredential}
+                                        </Form.Text>
+                                    </Form.Group>
+                                    <Button type="submit" disabled={isSubmitting} variant="primary">Submit</Button>
                                 </Form>
                             )}
                         </Formik>

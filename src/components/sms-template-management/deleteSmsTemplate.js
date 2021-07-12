@@ -1,12 +1,10 @@
-
-
 import React, {Component} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { connect} from 'react-redux';
-import {deleteQueuedEmailByID, fetchQueuedEmails} from '../../redux/reducers/emailReducer';
+import {deleteSmsTemplateByID, fetchSMSTemplates} from '../../redux/reducers/smsTemplateReducer';
 
-class DeleteQueuedEmail extends Component {
+class DeleteSmsTemplate extends Component {
   constructor(props){
     super(props);
     this.state= {};
@@ -19,9 +17,9 @@ class DeleteQueuedEmail extends Component {
     }
    handleDeleteClick =(id) =>{
         console.log(id);
-        this.props.deleteQueuedEmailByID(id).then(res => {
+        this.props.deleteSmsTemplateByID(id).then(res => {
           if (res.data) {
-              this.props.fetchQueuedEmails();
+              this.props.fetchSMSTemplates();
               this.handleClose();
           } else {
               console.log("error")
@@ -39,11 +37,11 @@ class DeleteQueuedEmail extends Component {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Delete queued email{typeof(this.props.email) == "object" ? this.props.id.map(item =>item) : this.props.id } 
+            Delete sms template{typeof(this.props.email) == "object" ? this.props.id.map(item =>item) : this.props.id } 
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-         <p>Are you sure to delete this queued email?</p>
+         <p>Are you sure to delete this sms template?</p>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() =>
@@ -61,5 +59,5 @@ const mapStateToProps = state =>{
     login: state.login ? state.login.accessToken : '',
     }
 }
-  export default connect(mapStateToProps, {deleteQueuedEmailByID, fetchQueuedEmails})(DeleteQueuedEmail);
+  export default connect(mapStateToProps, {deleteSmsTemplateByID, fetchSMSTemplates})(DeleteSmsTemplate);
  

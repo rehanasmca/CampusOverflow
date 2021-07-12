@@ -1,0 +1,30 @@
+{
+    "1":{
+        "name":"Rehana",
+        "userId": "1",
+        "registerStatus": "success",
+        "link": "http://www.google.com",
+        "password": "123456"
+    },
+    "2":{
+        "name":"Thanu sri",
+        "userId": "2",
+        "registerStatus": "success",
+        "link": "http://www.google.com",
+        "password": "123456"
+    },
+    "3":{
+        "name":"RAji",
+        "userId": "3",
+        "registerStatus": "success",
+        "link": "http://www.google.com",
+        "password": "123456"
+    },
+    "4":{
+        "name":"Rahul",
+        "userId": "4",
+        "registerStatus": "success",
+        "link": "http://www.google.com",
+        "password": "123456"
+    }
+}

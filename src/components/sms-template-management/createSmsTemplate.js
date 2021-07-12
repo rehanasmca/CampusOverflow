@@ -3,12 +3,17 @@ import { Formik } from 'formik';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Classes from './countries.module.css';
+import Classes from './smsTemplate.module.css';
 import { connect } from 'react-redux';
-import { fetchCountries, CreateNewCountry } from '../../redux/reducers/countriesReducer';
+import { CreateNewSmsTemplate, fetchSMSTemplates } from '../../redux/reducers/smsTemplateReducer';
+import { fetchRoles } from '../../redux/reducers/rolesReducer';
 import * as Yup from 'yup';
 
-class AddCountry extends React.Component {
+import Trumbowyg from 'react-trumbowyg'
+
+import 'react-trumbowyg/dist/trumbowyg.min.css'
+
+class CreateSmsTemplate extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -16,10 +21,9 @@ class AddCountry extends React.Component {
 
 
     initialValues = {
-        countryName: "",
-        metaKeyWords: "",
-        metaDescription: "",
-        metaTitle: "",
+        name: "",
+        sms: "",
+        roleId: 1,
         dateInserted: new Date(),
         dateUpdated: new Date(),
         active: true,
@@ -27,34 +31,33 @@ class AddCountry extends React.Component {
     };
 
     validationSchema = Yup.object().shape({
-        countryName: Yup.string()
+        name: Yup.string()
             .min(3, 'Too Short!')
             .max(30, 'Too Long!')
             .required('Required'),
-        metaKeyWords: Yup.string()
-            .min(3, 'Too Short!')
-            .max(30, 'Too Long!')
+        sms: Yup.string()
             .required('Required'),
-        metaDescription: Yup.string().required('Required')
-            .min(3, 'Too short!').max(50, 'Too Long'),
-        metaTitle: Yup.string()
-            .min(3, 'Too Short')
-            .max(30, 'Too Long').required('Required')
+        roleId: Yup.string()
+            .required('Required')
+
     });
 
-
+    componentDidMount() {
+        this.props.fetchRoles();
+    }
     render() {
         return (<div className={Classes.maindiv}>
-            <h1>Create new country form</h1>
+            <h1>Create New Sms template</h1>
             <Formik
                 initialValues={this.initialValues}
                 validationSchema={this.validationSchema}
                 // when submit form
                 onSubmit={(values, { setSubmitting }) => {
-                    this.props.CreateNewCountry(values).then(res => {
+                    this.props.CreateNewSmsTemplate(values).then(res => {
                         if (res.data) {
                             setSubmitting(false);
-                            this.props.fetchCountries();
+                            this.props.fetchSMSTemplates();
+
                         } else {
                             console.log("error");
                         }
@@ -73,51 +76,41 @@ class AddCountry extends React.Component {
 
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Country Name</Form.Label>
+                            <Form.Label>Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="countryName"
+                                name="name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.countryName} className={Classes.formInput} />
+                                value={values.name} className={Classes.formInput} />
                             <Form.Text className="text-muted">
-                                {errors.countryName && touched.countryName && errors.countryName}
+                                {errors.name && touched.name && errors.name}
+                            </Form.Text>
+                        </Form.Group>
+                      
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Role Id</Form.Label>
+                            <Form.Control as="select"
+                                name="roleId"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.roleId} className={Classes.formInput}>
+                                {this.props.roles.roles ? this.props.roles.roles.map((item, index) => <option value={item.id}>{item.roleName}</option>) : ''}
+                            </Form.Control>
+                            <Form.Text className="text-muted">
+                                {errors.roleId && touched.roleId && errors.roleId}
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Meta KeyWords</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="metaKeyWords"
+                            <Form.Label>sms</Form.Label>
+                            <Form.Control as="textarea"
+                                name="sms"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.metaKeyWords} className={Classes.formInput} />
+                                value={values.sms} className={Classes.formInput}
+                                style={{ height: '100px' }}></Form.Control>
                             <Form.Text className="text-muted">
-                                {errors.metaKeyWords && touched.metaKeyWords && errors.metaKeyWords}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Meta Description</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="metaDescription"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.metaDescription} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.metaDescription && touched.metaDescription && errors.metaDescription}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Meta Title</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="metaTitle"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.metaTitle} className={Classes.formInput} />
-                            <Form.Text className="text-muted">
-                                {errors.metaTitle && touched.metaTitle && errors.metaTitle}
+                                {errors.sms && touched.sms && errors.sms}
                             </Form.Text>
                         </Form.Group>
                         <Button type="submit" disabled={isSubmitting} variant="primary">Save</Button>
@@ -125,10 +118,31 @@ class AddCountry extends React.Component {
 
                 )}
             </Formik>
-
+            <Trumbowyg
+        buttons={
+            [
+                ['formatting'],
+                'btnGrp-semantic',
+                ['link'],
+                ['insertImage'],
+                'btnGrp-justify',
+                'btnGrp-lists',
+                ['fullscreen']
+            ]
+        }
+        data='Hello, World!'
+        placeholder='Type your text!'
+        onChange={() => console.log('Change event fired')} 
+    />
         </div>
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        roles: state.roles ? state.roles : []
 
-export default connect('', { CreateNewCountry, fetchCountries })(AddCountry);
+    }
+};
+
+export default connect(mapStateToProps, { CreateNewSmsTemplate, fetchSMSTemplates, fetchRoles })(CreateSmsTemplate);

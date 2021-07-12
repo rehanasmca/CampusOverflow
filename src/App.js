@@ -45,16 +45,25 @@ import AddSms from './components/sms-management/createSms';
 import AllQueuedSMS from './components/sms-management/getAllQueuedSMS';
 import AllQueuedEmails from './components/Email-module/allQueuedEmails';
 import AddQueuedEmail from './components/Email-module/addQueuedEmail';
+import CreateEmailTemplate from './components/Email-template-management/createEmailTemplate';
+import AllEmailTemplates from './components/Email-template-management/allEmailTemplates';
+import AllSmsTemplates from './components/sms-template-management/allSmsTemplates';
+import CreateSmsTemplate from './components/sms-template-management/createSmsTemplate';
+import MailingTemplate from './components/mailing-templates/mailingTemplate';
+import UniversityTemplate from './components/mailing-templates/universityTemplate';
+ import BlogTemplate from './components/mailing-templates/blogTemplate';
+import $ from 'jquery'
 class App extends React.Component {
 
   render() {
+   
     return (
       <div>
         <div >
           <Router>
 
             <Header></Header>
-            {/* <NavBar /> */}
+           {/* <NavBar /> */}
             <Switch>
               <Route exact path='/' component={Home}></Route>
               <Route exact path='/home' component={Home}></Route>
@@ -89,6 +98,13 @@ class App extends React.Component {
               <Route exact path='/addSms' component={AddSms}></Route>
               <Route exact path='/queuedSms' component={AllQueuedSMS}></Route>
               <Route exact path='/addQueuedEmail' component={AddQueuedEmail}></Route>
+              <Route exact path='/addEmailTemplate' component={CreateEmailTemplate}></Route>
+              <Route exact path='/allEmailTemplates' component={AllEmailTemplates}></Route>
+              <Route exact path='/allSmsTemplates' component={AllSmsTemplates}></Route>
+              <Route exact path='/createSmsTemplate' component={CreateSmsTemplate}></Route>
+              <Route exact path='/mailingTemplates' component={MailingTemplate}></Route>
+              <Route exact path='/universityTemplates' component={UniversityTemplate}></Route>
+              <Route exact path='/blogTemplates' component={BlogTemplate}></Route>
               
             </Switch>
 

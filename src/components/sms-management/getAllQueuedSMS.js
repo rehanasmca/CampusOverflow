@@ -55,7 +55,7 @@ class AllQueuedSMS extends React.Component {
     })
   }
 
- columns = ["S.no", "Phone number","Message" ,"Edit", "delete", "select"];
+ columns = ["S.no", "Phone number","Message" ];
 
 //  to open delet modal
   handleDeletShow (id) {

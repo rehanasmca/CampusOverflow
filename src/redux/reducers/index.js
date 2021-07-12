@@ -14,6 +14,7 @@ import { SendedEmailReducer} from './emailReducer';
 import { SMSReducer } from "./smsRducer";
 import { SMSTemplateReducer } from "./smsTemplateReducer";
 import {QueuedSMSReducer} from "./smsRducer";
+import {EmailTemplateReducer} from "./emailTemplateReducer";
 const Reducers = combineReducers({
     login: LoginReducer,
     roles: RolesReducer,
@@ -30,6 +31,7 @@ const Reducers = combineReducers({
     sms: SMSReducer,
     smsTemplates : SMSTemplateReducer,
     queuedSms: QueuedSMSReducer,
-    queuedemails: QueuedEmailsReducer
+    queuedemails: QueuedEmailsReducer,
+    emailTemplates: EmailTemplateReducer
 });
 export default Reducers;

@@ -36,6 +36,15 @@
             "View Queued Emails": {
                 "pathName": "/allQueuedEmails"
             },
+            "Email-Templates": {
+                "isOpen": false,
+                "create template": {
+                    "pathName": "/addEmailTemplate"
+                },
+                "All Email Templates": {
+                    "pathName": "/allEmailTemplates"
+                }
+            },
             "Sended sms" : {
                 "isOpen": false,
                 "Create SMS":{
@@ -44,6 +53,7 @@
                 "All Sended SMS": {
                     "pathName": "/allSendedSMS"
                 }
+
             }
         }
 
@@ -105,56 +115,18 @@
             }
         }
     },
-    "products": {
+    "Sms Management": {
         "isOpen": false,
-        "electronic": {
-            "pathName": "/electronics"
+        "all SmsTemplate": {
+            "pathName": "/allSmsTemplates"
         },
-        "home appliances": {
-            "pathName": "/electonics"
+        "Create sms template": {
+            "pathName": "/createSmsTemplate"
         },
-        "furniture": {
-            "pathName": "/furniture"
-        },
-        "food Items": {
-            "pathName": "/foodItems"
-        },
-        "clothes": {
-            "isOpen": false,
-            "men": {
-                "isOpen": false,
-                "official": {
-                    "isOpen": false,
-                    "branded": {
-                        "pathName": "/products"
-                    },
-                    "normal": {
-                        "pathName": "/nobrands"
-                    }
-                },
-                "nightWear": {
-                    "pathName": "/nightwear"
-                }
-            },
-            "women": {
-                "isOpen": false,
-                "garments": {
-                    "isOpen": false,
-                    "accessories": {
-                        "pathName": "/accessories"
-                    },
-                    "beauty products": {
-                        "pathName": "/beauty"
-                    }
-                },
-                "officialWomen": {
-                    "pathName": "/officialWomen"
-                },
-                "nightWearWomen": {
-                    "pathName": "/nightwearWomen"
-                }
-            }
+        "mailing Templates":{ 
+            "pathName" : "/mailingTemplates"
         }
+       
     },
     "About": {
         "pathName": "/home"

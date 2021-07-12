@@ -3,15 +3,15 @@ import { ActionTypes } from "../constants/action-types";
 import axios from 'axios';
 import { Constants } from '../../constatnts';
 const initialState = {
-  smssmsTemplates: []
+  emailTemplates: []
 }
-export const SMSTemplateReducer = (state = initialState, action) => {
+export const EmailTemplateReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "GET_ALL_SMS_TEMPLATES_SUCCESS":
+    case "GET_ALL_EMAIL_TEMPLATES_SUCCESS":
       let actions = action.payload;
       console.log(actions)
       return {
-        smsTemplates: actions
+        emailTemplates: actions
       }
 
     default: return state
@@ -19,7 +19,7 @@ export const SMSTemplateReducer = (state = initialState, action) => {
   }
 }
 
-export function fetchSMSTemplates() {
+export function fetchEmailTemplates() {
       return async function getData(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
@@ -27,15 +27,15 @@ export function fetchSMSTemplates() {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token 
     };
-    const response = await axios.get(Constants.testBaseUrl + "/Communication/GetAllSMSTemplateAsync/0/10/false", { headers: requestOptions })
+    const response = await axios.get(Constants.testBaseUrl + "/Communication/GetAllEmailTemplateAsync/0/10/false", { headers: requestOptions })
       .then(response => response);
 console.log(response)
-    dispatch({ type: "GET_ALL_SMS_TEMPLATES_SUCCESS", payload: response.data.data })
+    dispatch({ type:"GET_ALL_EMAIL_TEMPLATES_SUCCESS", payload: response.data.data })
   }
 }
 
 //   get users by passing skip limit
-export function fetchSMSTemplateByLimit(values) {
+export function fetchEmailTemplatesByLimit(values) {
   return async function getUsers(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
@@ -43,14 +43,14 @@ export function fetchSMSTemplateByLimit(values) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.get(Constants.testBaseUrl + `/Communication​/GetAllSMSSendDetailAsync​/${values}/10/false`, { headers: requestOptions })
+    const response = await axios.get(Constants.testBaseUrl + `/Communication/GetAllEmailTemplateAsync/${values}/10/false`, { headers: requestOptions })
       .then(response => response);
-    dispatch({ type: ActionTypes.GET_ALL_SMS_SUCCESS, payload: response.data.data })
+    dispatch({ type: "GET_ALL_EMAIL_TEMPLATES_SUCCESS", payload: response.data.data })
   }
 }
 
-// get city by id 
-export function getSmsTemplateById(id) {
+// get template by id 
+export function getEmailTemplateById(id) {
   return async function getData(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
@@ -58,7 +58,7 @@ export function getSmsTemplateById(id) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.get(Constants.testBaseUrl + `/Communication/GetSMSTemplateByIdAsync/${id}`, { headers: requestOptions })
+    const response = await axios.get(Constants.testBaseUrl + `/Communication/GetEmailTemplateByIdAsync/${id}`, { headers: requestOptions })
       .then(response => {
         if (response.data.data) {
           return response.data;
@@ -75,9 +75,9 @@ export function getSmsTemplateById(id) {
 
 }
 
-// delete city by id
-export function deleteSmsTemplateByID(id) {
-  return async function deleteCity(dispatch, getState) {
+// delete email template by id
+export function deleteEmailTemplateByID(id) {
+  return async function deleteTemplate(dispatch, getState) {
     const oldState = getState();
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
@@ -85,7 +85,7 @@ export function deleteSmsTemplateByID(id) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.post(Constants.testBaseUrl + `/Communication/DeleteSMSTemplateAsync/${id}`, { headers: requestOptions })
+    const response = await axios.post(Constants.testBaseUrl + `/Communication/DeleteEmailTemplateAsync/${id}`, { headers: requestOptions })
       .then(response => {
         if (response.data.data) {
           return response.data;
@@ -103,16 +103,16 @@ export function deleteSmsTemplateByID(id) {
   }
 }
 
-// update city
-export function updateSMSTemplate(values) {
-  return async function updateSMSValues(dispatch, getState) {
+// update template
+export function updateTemplate(values) {
+  return async function updateValues(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
     const requestOptions = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.post(Constants.testBaseUrl + "/Communication/UpdateSMSTemplateAsync", values, { headers: requestOptions })
+    const response = await axios.post(Constants.testBaseUrl + "/Communication/UpdateEmailTemplateAsync", values, { headers: requestOptions })
       .then(res => {
           console.log(res)
         if (res.data.data) {
@@ -129,16 +129,16 @@ export function updateSMSTemplate(values) {
 }
 
 
-// create new city
-export function CreateNewSmsTemplate(values) {
-  return async function createCity(dispatch, getState) {
+// create new template
+export function CreateNewTemplate(values) {
+  return async function createTemplate(dispatch, getState) {
     let t = JSON.parse(localStorage.getItem("userData"))
     let token = t.accessToken;
     const requestOptions = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     };
-    const response = await axios.post(Constants.testBaseUrl + "/Communication/CreateSMSTemplateAsync", values, { headers: requestOptions })
+    const response = await axios.post(Constants.testBaseUrl + "/Communication/CreateEmailTemplateAsync", values, { headers: requestOptions })
       .then(res => {
         if (res.data.data) {
           return res.data;
